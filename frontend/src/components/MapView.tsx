@@ -21,19 +21,8 @@ interface Props {
 }
 
 const EMPTY: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: [] };
-const STYLE: maplibregl.StyleSpecification = {
-  version: 8,
-  sources: {
-    osm: {
-      type: "raster",
-      tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
-      tileSize: 256,
-      maxzoom: 19,
-      attribution: "© OpenStreetMap contributors",
-    },
-  },
-  layers: [{ id: "osm", type: "raster", source: "osm", paint: { "raster-saturation": -0.55, "raster-brightness-max": 0.92 } }],
-};
+// OpenFreeMap: free, keyless, built for apps (OSM's own tile servers forbid app basemap use).
+const STYLE_URL = "https://tiles.openfreemap.org/styles/positron";
 
 function initLayers(map: maplibregl.Map) {
   for (const id of ["heat", "routes", "checkpoints"]) map.addSource(id, { type: "geojson", data: EMPTY });
@@ -108,7 +97,7 @@ export function MapView({ analysis, selectedId, hour, showHeat, focus, onSelectR
     try {
       map = new maplibregl.Map({
         container: container.current!,
-        style: STYLE,
+        style: STYLE_URL,
         center: [-98, 39],
         zoom: 3.5,
         attributionControl: { compact: true },
@@ -120,6 +109,8 @@ export function MapView({ analysis, selectedId, hour, showHeat, focus, onSelectR
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
     map.on("load", () => {
       initLayers(map);
+      const firstLabel = map.getStyle().layers.find((l) => l.type === "symbol")?.id;
+      if (firstLabel) for (const id of ["heat", "route-casing", "route-line"]) map.moveLayer(id, firstLabel);
       map.on("click", "route-line", (e: MapLayerMouseEvent) => {
         const id = e.features?.[0]?.properties?.id;
         if (id) onSelectRef.current(id);

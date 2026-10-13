@@ -8,6 +8,7 @@ at the truck's **estimated arrival time** at each checkpoint, adjusted for **loa
 | Routing (3 options) | OSRM |
 | Weather (hourly, 16 days) | Open-Meteo |
 | Place search | Photon (built for type-ahead) |
+| Basemap tiles | OpenFreeMap (OSM's own tile servers prohibit app use) |
 
 ## Run locally
 
