@@ -69,9 +69,4 @@ difference never beats a much faster route: that is the "balance risk and time" 
 * Forecast range is 15 days, so departures are limited to the next 13 days (a 48 h heatmap window fits).
 * Times are shown in the viewer's browser timezone.
 
-## Loom outline (5-10 min)
-1. Enter a trip, show the three routes and the recommendation reason (1 min).
-2. Open `risk.py` / `scoring.py`: thresholds, load rules, ordering, tests (3 min).
-3. Show a heavy load flipping the recommendation (same trip, 20,000 vs 42,000 lb) (1 min).
-4. Heatmap slider 0-48 h, checkpoint table, popups (1 min).
-5. Architecture: pure domain, provider protocols, batching and caching, trade-offs above (2 min).
+
